@@ -49,12 +49,15 @@ const SignUpForm = () => {
         }
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/signup`, formData);
+            // const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/signup`, formData);
+            const response = await axios.post(`http://localhost:5030/api/auth/signup`, { email: formData.email, password: formData.password });
+
             
-            const { message, token } = response.data;
+            // const { message, token } = response.data;
+            const { token } = response.data;
             localStorage.setItem('authToken', token);
 
-            setToastMessage(message);
+            setToastMessage('Sign up successful!');
             setToastType('success');
             setShowToast(true);
 

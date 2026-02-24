@@ -40,11 +40,13 @@ const LoginForm = () => {
         }
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/login`, formData);
-            const { message, token } = response.data;
+            // const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/login`, formData);
+            // const { message, token } = response.data;
+            const response = await axios.post(`http://localhost:5030/api/auth/login`, formData);
+            const { token } = response.data;
             localStorage.setItem('authToken', token);
 
-            setToastMessage(message);
+            setToastMessage('Login successful!');
             setToastType('success');
             setShowToast(true);
             setIsLoggedIn(true);
