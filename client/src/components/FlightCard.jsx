@@ -109,20 +109,20 @@ const FlightCard = ({ flight }) => {
     setIsSaving(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/save-flight`, {
+      const response = await fetch(`http://localhost:5030/api/flights/save`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
         body: JSON.stringify({
-          flightName: `${flight.airline.name} ${flight.flight.number}`,
-          departureTime: new Date(flight.departure.scheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
-          arrivalTime: new Date(flight.arrival.scheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
-          flightDate: flight.flight_date,
-          departureIata: flight.departure.iata,
-          arrivalIata: flight.arrival.iata,
-          flightPrice: getRandomPrice()
+          FlightName: `${flight.airline.name} ${flight.flight.number}`,
+          DepartureTime: new Date(flight.departure.scheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+          ArrivalTime: new Date(flight.arrival.scheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+          FlightDate: flight.flight_date,
+          DepartureIata: flight.departure.iata,
+          ArrivalIata: flight.arrival.iata,
+          Price: getRandomPrice()
         }),
       });
 

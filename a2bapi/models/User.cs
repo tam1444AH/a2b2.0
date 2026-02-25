@@ -1,14 +1,3 @@
-//namespace a2bapi.Models
-//{
-//    public class User
-//    {
-//        public int Id { get; set; }
-//        public string? Email { get; set; }
-//        public string? Password { get; set; }
-
-//    }
-//}
-
 using System.ComponentModel.DataAnnotations;
 
 namespace a2bapi.Models
@@ -24,5 +13,8 @@ namespace a2bapi.Models
         public string PasswordHash { get; set; } = "";
 
         public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+
+        public List<SavedFlight> SavedFlights { get; set; } = new();
+        public List<SavedHotel> SavedHotels { get; set; } = new();
     }
 }

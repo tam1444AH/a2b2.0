@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace a2bapi.Models.Hotels
+namespace a2bapi.Models
 {
     public class Hotel
     {

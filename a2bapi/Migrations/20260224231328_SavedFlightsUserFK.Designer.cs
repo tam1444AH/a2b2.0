@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using a2bapi.Data;
 
@@ -11,9 +12,11 @@ using a2bapi.Data;
 namespace a2bapi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260224231328_SavedFlightsUserFK")]
+    partial class SavedFlightsUserFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,52 +78,6 @@ namespace a2bapi.Migrations
                     b.ToTable("SavedFlights");
                 });
 
-            modelBuilder.Entity("a2bapi.Models.SavedHotel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("HotelCountryCode")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("country_code");
-
-                    b.Property<decimal>("HotelDistance")
-                        .HasColumnType("decimal(65,30)")
-                        .HasColumnName("hotel_distance");
-
-                    b.Property<string>("HotelIataCode")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("iata_code");
-
-                    b.Property<string>("HotelName")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("hotel_name");
-
-                    b.Property<int>("HotelRating")
-                        .HasColumnType("int")
-                        .HasColumnName("hotel_rating");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)")
-                        .HasColumnName("price");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SavedHotels");
-                });
-
             modelBuilder.Entity("a2bapi.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -160,22 +117,9 @@ namespace a2bapi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("a2bapi.Models.SavedHotel", b =>
-                {
-                    b.HasOne("a2bapi.Models.User", "User")
-                        .WithMany("SavedHotels")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("a2bapi.Models.User", b =>
                 {
                     b.Navigation("SavedFlights");
-
-                    b.Navigation("SavedHotels");
                 });
 #pragma warning restore 612, 618
         }

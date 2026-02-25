@@ -28,6 +28,8 @@ var connectionString = builder.Configuration.GetConnectionString("Default") ?? t
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFlightsService, FlightsService>();
+builder.Services.AddScoped<IHotelsService, HotelsService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
@@ -174,43 +176,48 @@ app.Run();
 //    return Results.Problem(exception?.Message ?? "An unknown error occured");
 //});
 
-//app.MapGet("api/flights/{from}-{to}", async (string from, string to, IHttpClientFactory httpClientFactory) => 
+//app.MapGet("api/flights/{from}-{to}", async (string from, string to, IHttpClientFactory httpClientFactory) =>
 //{
-//    var apiKey = Environment.GetEnvironmentVariable("API_ACCESS_KEY");
+//var apiKey = Environment.GetEnvironmentVariable("API_ACCESS_KEY");
 
-//    if (string.IsNullOrEmpty(apiKey)) {
-//        return Results.Problem("API access key is not set.");
-//    }
+//if (string.IsNullOrEmpty(apiKey))
+//{
+//    return Results.Problem("API access key is not set.");
+//}
 
-//    var client = httpClientFactory.CreateClient();
-//    var url = "http://api.aviationstack.com/v1/flights";
+//var client = httpClientFactory.CreateClient();
+//var url = "http://api.aviationstack.com/v1/flights";
 
-//    var query = new Dictionary<string, string>
+//var query = new Dictionary<string, string>
 //    {
 //        { "access_key", apiKey },
 //        { "dep_iata", from.Trim().ToUpper() },
 //        { "arr_iata", to.Trim().ToUpper() }
 //    };
 
-//    try {
-//        var response = await client.GetAsync($"{url}?{string.Join("&", query.Select(kvp => $"{kvp.Key}={kvp.Value}"))}");
+//try
+//{
+//    var response = await client.GetAsync($"{url}?{string.Join("&", query.Select(kvp => $"{kvp.Key}={kvp.Value}"))}");
 
-//        if (!response.IsSuccessStatusCode) {
-//            var error = await response.Content.ReadAsStringAsync();
-//            return Results.Problem($"Error fetching flights: {error}");
-//        }
-
-//        var responseJson = await response.Content.ReadFromJsonAsync<FlightsResponse>();
-
-//        if (responseJson?.Data == null || responseJson.Data.Count == 0) {
-//            return Results.Ok(new { Message = "No flights found for the specified route."});
-//        }
-
-//        return Results.Ok(responseJson.Data);
+//    if (!response.IsSuccessStatusCode)
+//    {
+//        var error = await response.Content.ReadAsStringAsync();
+//        return Results.Problem($"Error fetching flights: {error}");
 //    }
-//    catch (Exception ex) {
-//        return Results.Problem($"Error fetching flights: {ex.Message}");
+
+//    var responseJson = await response.Content.ReadFromJsonAsync<FlightsResponse>();
+
+//    if (responseJson?.Data == null || responseJson.Data.Count == 0)
+//    {
+//        return Results.Ok(new { Message = "No flights found for the specified route." });
 //    }
+
+//    return Results.Ok(responseJson.Data);
+//}
+//catch (Exception ex)
+//{
+//    return Results.Problem($"Error fetching flights: {ex.Message}");
+//}
 
 //});
 

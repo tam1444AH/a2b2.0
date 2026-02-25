@@ -45,7 +45,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchSavedFlights = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/saved-flights`, {
+        const response = await fetch(`http://localhost:5030/api/flights/saved`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`, 
@@ -66,7 +66,7 @@ const ProfilePage = () => {
 
     const fetchSavedHotels = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/saved-hotels`, {
+        const response = await fetch(`http://localhost:5030/api/hotels/saved`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
