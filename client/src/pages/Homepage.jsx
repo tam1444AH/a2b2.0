@@ -27,7 +27,7 @@ const Homepage = () => {
 
   const handleSearch = async (from, to) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/flights/${from}-${to}`);
+      const response = await fetch(`http://localhost:5030/api/flights/${from}-${to}`);
 
       if (!response.ok) {
         const error = await response.json();
@@ -36,6 +36,7 @@ const Homepage = () => {
       }
 
       const data = await response.json();
+      console.log(data);
       // const data = flights.flights;
 
       // handleToast('dark', 'No flights found for the specified route.');
@@ -47,8 +48,8 @@ const Homepage = () => {
       }
 
       // setFlightsH(data);
-      setFlights(data);
-      handleToast('success', `${data.length} flights found!`);
+      // setFlights(data);
+      // handleToast('success', `${data.length} flights found!`);
   
 
     } catch (err) {

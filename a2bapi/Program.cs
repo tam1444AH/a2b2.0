@@ -33,6 +33,12 @@ builder.Services.AddScoped<IHotelsService, HotelsService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
+builder.Services.Configure<AviationStackSettings>(builder.Configuration.GetSection("AviationStack"));
+builder.Services.AddHttpClient<IAviationStackService, AviationStackService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["AviationStack:BaseUrl"] ?? "http://api.aviationstack.com/v1/");
+});
+
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
 var jwt = builder.Configuration.GetSection("Jwt").Get<JwtSettings>() ?? throw new Exception("Missing Jwt config.");

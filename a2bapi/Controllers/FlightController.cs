@@ -11,10 +11,12 @@ namespace a2bapi.Controllers
     public class FlightController : ControllerBase
     {
         private readonly IFlightsService _flightsService;
+        private readonly IAviationStackService _aviationStackService;
 
-        public FlightController(IFlightsService flightsService)
+        public FlightController(IFlightsService flightsService, IAviationStackService aviationStackService)
         {
             _flightsService = flightsService;
+            _aviationStackService = aviationStackService;
         }
 
         [Authorize]
@@ -58,6 +60,25 @@ namespace a2bapi.Controllers
             catch (Exception ex)
             {
                 return Conflict(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("{from}-{to}")]
+        public async Task<ActionResult<List<FlightSearchResultDto>>> Search(string from, string to, CancellationToken ct)
+        {
+            try
+            {
+                var results = await _aviationStackService.SearchFlightsAsync(from, to, ct);
+
+                if (results.Count == 0)
+                {
+                    return Ok(new List<FlightSearchResultDto>());
+                }
+                return Ok(results);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
         }
     }
