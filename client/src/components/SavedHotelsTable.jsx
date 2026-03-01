@@ -26,7 +26,7 @@ const SavedHotelsTable = ({ hotels, setHotels }) => {
   const handleClose = () => setShow(false);
   const handleShow = (hotel) => {
     setSelectedHotel(hotel); 
-    setTotalCost(hotel.hotelPrice * numNights);
+    setTotalCost(hotel.price * numNights);
     setShow(true);
   };
 
@@ -44,7 +44,7 @@ const SavedHotelsTable = ({ hotels, setHotels }) => {
     const value = Math.max(1, parseInt(e.target.value) || 1);
     setNumNights(value);
     if (selectedHotel) {
-      setTotalCost(value * selectedHotel.hotelPrice);
+      setTotalCost(value * selectedHotel.price);
     }
   };
 
@@ -142,7 +142,7 @@ const SavedHotelsTable = ({ hotels, setHotels }) => {
 
   const handleDeleteHotel = async (hotelId) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/delete-hotel/${hotelId}`, {
+      const response = await fetch(`http://localhost:5030/api/hotels/delete/${hotelId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -180,7 +180,7 @@ const SavedHotelsTable = ({ hotels, setHotels }) => {
             <tr key={index}>
               <td>{hotel.hotelName}</td>
               <td>{hotel.hotelDistance} MI</td>
-              <td>${hotel.hotelPrice}</td>
+              <td>${hotel.price}</td>
               <td>{renderStars(hotel.hotelRating)}</td>
               <td>{hotel.hotelIataCode}</td>
               <td className="d-flex gap-2 justify-content-around">

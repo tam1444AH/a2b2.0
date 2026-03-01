@@ -103,7 +103,8 @@ namespace a2bapi.Services
                 HotelDistance = h.Distance?.Value ?? 0,
                 HotelDistanceUnit = h.Distance?.Unit ?? "N/A",
                 HotelCountryCode = h.Address?.CountryCode ?? "N/A",
-                HotelRating = h.Rating
+                HotelRating = h.Rating,
+                HotelIataCode = h.IataCode ?? to,
             }).ToList();
         }
     }

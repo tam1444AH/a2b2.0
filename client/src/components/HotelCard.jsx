@@ -100,19 +100,19 @@ const HotelCard = ({ hotel }) => {
     setIsSaving(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/save-hotel`, {
+      const response = await fetch(`http://localhost:5030/api/hotels/save`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
         body: JSON.stringify({
-          hotelName: hotel.name,
-          hotelDistance: hotel.distance.value,
-          hotelStars: hotel.rating,
-          hotelPrice: getRandomPrice(),
-          hotelCountryCode: hotel.address.countryCode,
-          hotelIataCode: hotel.iataCode
+          HotelName: hotel.hotelName,
+          HotelDistance: hotel.hotelDistance,
+          HotelRating: hotel.hotelRating,
+          Price: getRandomPrice(),
+          HotelCountryCode: hotel.hotelCountryCode,
+          HotelIataCode: hotel.hotelIataCode
         }),
       });
       
@@ -136,14 +136,14 @@ const HotelCard = ({ hotel }) => {
       <Card className="shadow-sm h-100">
         <Card.Body className="d-flex flex-column justify-content-between">
           
-          <p className="mb-3 text-center fw-bold text-truncate" style={{ fontSize: '1.125rem' }}>{hotel.name}</p>
+          <p className="mb-3 text-center fw-bold text-truncate" style={{ fontSize: '1.125rem' }}>{hotel.hotelName}</p>
 
           
           <div className="d-flex justify-content-between align-items-center mb-3 fs-5">
             <span className="text-dark fw-medium">
-              {hotel.distance.value} {hotel.distance.unit}
+              {hotel.hotelDistance} {hotel.hotelDistanceUnit}
             </span>
-            <span className="badge bg-dark text-white">{hotel.address.countryCode}</span>
+            <span className="badge bg-dark text-white">{hotel.hotelCountryCode}</span>
           </div>
 
           
@@ -153,7 +153,7 @@ const HotelCard = ({ hotel }) => {
 
           
           <div className="d-flex justify-content-center mb-3 fs-5">
-            {renderStars(hotel.rating)}
+            {renderStars(hotel.hotelRating)}
           </div>
         </Card.Body>
 
@@ -204,7 +204,7 @@ const HotelCard = ({ hotel }) => {
 
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Book Hotel: {hotel.name}</Modal.Title>
+          <Modal.Title>Book Hotel: {hotel.hotelName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>

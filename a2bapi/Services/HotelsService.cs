@@ -9,6 +9,7 @@ namespace a2bapi.Services
     {
         Task<List<SavedHotelDto>> GetSavedHotelsAsync(int userId);
         Task<int> SaveHotelAsync(int userId, SaveHotelRequest request);
+        Task<int> DeleteSavedHotelAsync(int userId, int hotelId);
 
     }
     public class HotelsService : IHotelsService
@@ -71,6 +72,21 @@ namespace a2bapi.Services
             await _db.SaveChangesAsync();
 
             return entity.Id;
+        }
+
+        public async Task<int> DeleteSavedHotelAsync(int userId, int hotelId)
+        {
+            var hotel = await _db.SavedHotels.FirstOrDefaultAsync(h => h.Id == hotelId && h.UserId == userId);
+
+            if (hotel == null)
+            {
+                throw new Exception("Hotel not found.");
+            }
+
+            _db.SavedHotels.Remove(hotel);
+            await _db.SaveChangesAsync();
+
+            return hotel.Id;
         }
     }
 }

@@ -88,5 +88,27 @@ namespace a2bapi.Controllers
             }
 
         }
+
+        [Authorize]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteSavedHotel(int id)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                return Unauthorized(new { message = "Invalid or missing claim." });
+            }
+
+            try
+            {
+                var deletedId = await _hotelsService.DeleteSavedHotelAsync(userId, id);
+                return Ok(new { message = "Hotel deleted successfully", id = deletedId });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
     }
 }
