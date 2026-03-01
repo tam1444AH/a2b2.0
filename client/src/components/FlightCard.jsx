@@ -116,12 +116,12 @@ const FlightCard = ({ flight }) => {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
         body: JSON.stringify({
-          FlightName: `${flight.airline.name} ${flight.flight.number}`,
-          DepartureTime: new Date(flight.departure.scheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
-          ArrivalTime: new Date(flight.arrival.scheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
-          FlightDate: flight.flight_date,
-          DepartureIata: flight.departure.iata,
-          ArrivalIata: flight.arrival.iata,
+          FlightName: `${flight.airlineName} ${flight.flightNumber}`,
+          DepartureTime: new Date(flight.departureScheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+          ArrivalTime: new Date(flight.arrivalScheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+          FlightDate: flight.flightDate,
+          DepartureIata: flight.departureIata,
+          ArrivalIata: flight.arrivalIata,
           Price: getRandomPrice()
         }),
       });
@@ -148,27 +148,27 @@ const FlightCard = ({ flight }) => {
         <Card.Body className="d-flex flex-column justify-content-between">
           
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <h5 className="mb-0 fs-5">{new Date(flight.departure.scheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</h5>
+            <h5 className="mb-0 fs-5">{new Date(flight.departureScheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</h5>
             <IoAirplaneSharp className="text-danger fs-2" />
-            <h5 className="mb-0 fs-5">{new Date(flight.arrival.scheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</h5>
+            <h5 className="mb-0 fs-5">{new Date(flight.arrivalScheduled).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</h5>
           </div>
 
           
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <span className="fw-bold text-muted fs-5">{flight.departure.iata}</span>
+            <span className="fw-bold text-muted fs-5">{flight.depatureIata}</span>
             <div className="flex-grow-1 mx-2 border-top border-dark"></div>
-            <span className="fw-bold text-muted fs-5">{flight.arrival.iata}</span>
+            <span className="fw-bold text-muted fs-5">{flight.arrivalIata}</span>
           </div>
 
           
           <Card.Text className="text-center mb-3" style={{ fontSize: '1.125rem' }}>
-            <strong>{flight.airline.name} {flight.flight.number}</strong>
+            <strong>{flight.airlineName} {flight.flightNumber}</strong>
           </Card.Text>
 
           
           <div className="d-flex justify-content-between mb-3">
-            <span className="badge bg-dark text-white">{flight.flight_status}</span>
-            <span className="badge bg-dark text-white">{flight.flight_date}</span>
+            <span className="badge bg-dark text-white">{flight.flightStatus}</span>
+            <span className="badge bg-dark text-white">{flight.flightDate}</span>
           </div>
 
           <span className="text-black fw-medium fs-4">${getRandomPrice()}</span>
@@ -225,7 +225,7 @@ const FlightCard = ({ flight }) => {
 
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Book Flight: {flight.airline.name} {flight.flight.number}</Modal.Title>
+          <Modal.Title>Book Flight: {flight.airlineName} {flight.flightNumber}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>

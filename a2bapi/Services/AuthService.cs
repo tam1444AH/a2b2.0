@@ -51,7 +51,7 @@ namespace a2bapi.Services
             var user = await _db.Users.SingleOrDefaultAsync(u => u.Email == email);
             if (user == null)
             {
-                throw new UnauthorizedAccessException("Invalid email or password.");
+                throw new UnauthorizedAccessException("Invalid email or password!");
             }
 
             var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);

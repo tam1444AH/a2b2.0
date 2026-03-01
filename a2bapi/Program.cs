@@ -27,6 +27,7 @@ builder.Services.AddCors(opt =>
 var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new Exception("Missing DB connection string.");
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFlightsService, FlightsService>();
 builder.Services.AddScoped<IHotelsService, HotelsService>();
@@ -37,6 +38,12 @@ builder.Services.Configure<AviationStackSettings>(builder.Configuration.GetSecti
 builder.Services.AddHttpClient<IAviationStackService, AviationStackService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["AviationStack:BaseUrl"] ?? "http://api.aviationstack.com/v1/");
+});
+
+builder.Services.Configure<AmadeusSettings>(builder.Configuration.GetSection("Amadeus"));
+builder.Services.AddHttpClient<IAmadeusService, AmadeusService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Amadeus:BaseUrl"] ?? "https://test.api.amadeus.com/v1/");
 });
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
@@ -337,7 +344,8 @@ app.Run();
 //app.MapGet("api/hotels/{to}-{dist}-{stars}", [Authorize] async (string to, string dist, string stars, IHttpClientFactory httpClientFactory) =>
 //{
 
-//    try {
+//    try
+//    {
 
 //        to = to.ToUpper();
 
@@ -364,7 +372,7 @@ app.Run();
 //        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
 //        var response = await client.GetAsync(requestUrl);
 
-//        if (!response.IsSuccessStatusCode) 
+//        if (!response.IsSuccessStatusCode)
 //        {
 
 //            var error = await response.Content.ReadAsStringAsync();
@@ -387,7 +395,8 @@ app.Run();
 //        return Results.Ok(hotelResponse.Data);
 
 //    }
-//    catch (Exception ex) {
+//    catch (Exception ex)
+//    {
 
 //        Console.WriteLine($"Error: {ex.Message}");
 //        return Results.Problem($"Error: {ex.Message}");

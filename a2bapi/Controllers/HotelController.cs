@@ -11,10 +11,12 @@ namespace a2bapi.Controllers
     public class HotelController : ControllerBase
     {
         private readonly IHotelsService _hotelsService;
+        private readonly IAmadeusService _amadeusService;
 
-        public HotelController(IHotelsService hotelsService)
+        public HotelController(IHotelsService hotelsService, IAmadeusService amadeusService)
         {
             _hotelsService = hotelsService;
+            _amadeusService = amadeusService;
         }
 
         [Authorize]
@@ -59,6 +61,32 @@ namespace a2bapi.Controllers
             {
                 return Conflict(new { message = ex.Message });
             }
+        }
+
+        [Authorize]
+        [HttpGet("{to}-{dist}-{stars}")]
+        public async Task<ActionResult<List<HotelSearchResultDto>>> Search(string to, string dist, string stars)
+        {
+            try
+            {
+                var results = await _amadeusService.SearchHotelsAsync(to, dist, stars);
+
+                if (results.Count == 0)
+                {
+                    return Ok(new List<HotelSearchResultDto>());
+                }
+
+                return Ok(results);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to search hotels.", detail = ex.Message });
+            }
+
         }
     }
 }

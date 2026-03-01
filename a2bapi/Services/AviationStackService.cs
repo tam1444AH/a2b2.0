@@ -1,6 +1,5 @@
 ﻿using a2bapi.Models;
 using a2bapi.Dtos.Flights;
-using System.Net.Http.Json;
 using Microsoft.Extensions.Options;
 
 namespace a2bapi.Services
@@ -50,7 +49,7 @@ namespace a2bapi.Services
                 FlightStatus = f.FlightStatus ?? "",
                 AirlineName = f.Airline?.Name ?? "",
                 FlightNumber = f.Flight?.Number ?? "",
-                DepatureIata = f.Departure?.Iata ?? "",
+                DepartureIata = f.Departure?.Iata ?? "",
                 ArrivalIata = f.Arrival?.Iata ?? "",
                 DepartureScheduled = TryParseOffset(f.Departure?.Scheduled),
                 ArrivalScheduled = TryParseOffset(f.Arrival?.Scheduled),

@@ -37,9 +37,9 @@ namespace a2bapi.Controllers
                 var response = await _auth.LoginAsync(request);
                 return Ok(response);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
-                return Unauthorized(new { message = "Invalid email or password." });
+                return Unauthorized(new { message = ex.Message });
             }
         }
 

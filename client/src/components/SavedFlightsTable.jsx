@@ -122,7 +122,7 @@ const SavedFlightsTable = ({ flights, setFlights }) => {
 
   const handleDeleteFlight = async (flightId) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/delete-flight/${flightId}`, {
+      const response = await fetch(`http://localhost:5030/api/flights/delete/${flightId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,

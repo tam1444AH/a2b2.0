@@ -54,15 +54,15 @@ const HotelsForm = ({ setHotels }) => {
 
         try {
 
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/hotels/${to}-${dist}-${stars}`, {
+            const response = await fetch(`http://localhost:5030/api/hotels/${to}-${dist}-${stars}`, {
                 method: 'GET',
                 headers: {     
                     Authorization: `Bearer ${localStorage.getItem("authToken")}`,
                     'Content-Type': 'application/json',
                 },
             });
+            console.log(response);
 
-            // console.log(response);
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -71,12 +71,8 @@ const HotelsForm = ({ setHotels }) => {
 
             const data = await response.json();
 
-            // console.log(hotels);
             
-            // setHotels(hotels.hotels);
             setHotels(data);    
-
-            // console.log(data);
 
 
             setToastType('success');

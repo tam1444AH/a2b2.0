@@ -10,6 +10,7 @@ namespace a2bapi.Services
     {
         Task<List<SavedFlightDto>> GetSavedFlightsAsync(int userId);
         Task<int> SaveFlightAsync(int userId, SaveFlightRequest request);
+        Task<int> DeleteSavedFlightAsync(int userId, int flightId);
     }
 
     public class FlightsService : IFlightsService
@@ -75,6 +76,22 @@ namespace a2bapi.Services
             await _db.SaveChangesAsync();
 
             return entity.Id;
+        }
+
+
+        public async Task<int> DeleteSavedFlightAsync(int userId, int flightId)
+        {
+            var flight = await _db.SavedFlights.FirstOrDefaultAsync(f => f.Id == flightId && f.UserId == userId);
+
+            if (flight == null)
+            {
+                throw new Exception("Flight not found.");
+            }
+
+            _db.SavedFlights.Remove(flight);
+            await _db.SaveChangesAsync();
+
+            return flight.Id;
         }
     }
 }

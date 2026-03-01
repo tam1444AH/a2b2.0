@@ -48,8 +48,8 @@ const Homepage = () => {
       }
 
       // setFlightsH(data);
-      // setFlights(data);
-      // handleToast('success', `${data.length} flights found!`);
+      setFlights(data);
+      handleToast('success', `${data.length} flights found!`);
   
 
     } catch (err) {

@@ -80,6 +80,33 @@ namespace a2bapi.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to search flights.", detail = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteSavedFlight(int id)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                return Unauthorized(new { message = "Invalid or missing claim." });
+            }
+
+            try
+            {
+                var deletedId = await _flightsService.DeleteSavedFlightAsync(userId, id);
+                return Ok(new { message = "Flight deleted successfully", id = deletedId });
+            } 
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
         }
     }
 }

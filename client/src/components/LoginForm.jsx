@@ -54,7 +54,7 @@ const LoginForm = () => {
         } catch (error) {
             console.log(error);
             setToastMessage(
-                error.response?.data || 'Incorrect password or email. Please try again.'
+                error.response?.data?.message || 'Incorrect password or email. Please try again.'
             );
             setToastType('error');
             setShowToast(true);
