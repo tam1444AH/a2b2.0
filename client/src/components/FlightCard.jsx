@@ -60,16 +60,16 @@ const FlightCard = ({ flight }) => {
     }
 
     const bookingDetails = {
-      FlightName: `${flight.airline.name} ${flight.flight.number}`,
-      FlightDate: flight.flight_date,
-      DepartureIata: flight.departure.iata,
-      ArrivalIata: flight.arrival.iata,
-      DepartureTime: new Date(flight.departure.scheduled).toLocaleTimeString([], {
+      FlightName: `${flight.airlineName} ${flight.flightNumber}`,
+      FlightDate: flight.flightDate,
+      DepartureIata: flight.departureIata,
+      ArrivalIata: flight.arrivalIata,
+      DepartureTime: new Date(flight.departureScheduled).toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit',
         hour12: true,
       }),
-      ArrivalTime: new Date(flight.arrival.scheduled).toLocaleTimeString([], {
+      ArrivalTime: new Date(flight.arrivalScheduled).toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit',
         hour12: true,
@@ -81,7 +81,7 @@ const FlightCard = ({ flight }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/book-flight`, {
+      const response = await fetch(`http://localhost:5030/api/flights/book`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -155,7 +155,7 @@ const FlightCard = ({ flight }) => {
 
           
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <span className="fw-bold text-muted fs-5">{flight.depatureIata}</span>
+            <span className="fw-bold text-muted fs-5">{flight.departureIata}</span>
             <div className="flex-grow-1 mx-2 border-top border-dark"></div>
             <span className="fw-bold text-muted fs-5">{flight.arrivalIata}</span>
           </div>

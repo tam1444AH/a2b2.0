@@ -46,7 +46,7 @@ namespace a2bapi.Services
             return data.Select(f => new FlightSearchResultDto
             {
                 FlightDate = f.FlightDate ?? "",
-                FlightStatus = f.FlightStatus ?? "",
+                FlightStatus = f.FlightStatus ?? "unknown",
                 AirlineName = f.Airline?.Name ?? "",
                 FlightNumber = f.Flight?.Number ?? "",
                 DepartureIata = f.Departure?.Iata ?? "",

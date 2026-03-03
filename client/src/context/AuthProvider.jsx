@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
 
     const isTokenExpired = (token) => {
         try {
-            const { exp } = jwtDecode(token);;
+            const { exp } = jwtDecode(token);
             const now = Date.now() / 1000;
             return exp < now;
         } catch (error) {

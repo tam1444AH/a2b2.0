@@ -86,7 +86,7 @@ const SavedHotelsTable = ({ hotels, setHotels }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/book-hotel`, {
+      const response = await fetch(`http://localhost:5030/api/hotels/book`, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",

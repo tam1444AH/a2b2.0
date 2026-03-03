@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using a2bapi.Dtos.Flights;
+using a2bapi.Dtos.Hotels;
 using a2bapi.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using a2bapi.Dtos.Hotels;
 
 namespace a2bapi.Controllers
 {
@@ -12,11 +13,13 @@ namespace a2bapi.Controllers
     {
         private readonly IHotelsService _hotelsService;
         private readonly IAmadeusService _amadeusService;
+        private readonly IEmailService _emailService;
 
-        public HotelController(IHotelsService hotelsService, IAmadeusService amadeusService)
+        public HotelController(IHotelsService hotelsService, IAmadeusService amadeusService, IEmailService emailService)
         {
             _hotelsService = hotelsService;
             _amadeusService = amadeusService;
+            _emailService = emailService;
         }
 
         [Authorize]
@@ -108,6 +111,38 @@ namespace a2bapi.Controllers
             catch (Exception ex)
             {
                 return NotFound(new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPost("book")]
+        public async Task<IActionResult> BookFlight([FromBody] BookHotelRequest request)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                return Unauthorized(new { message = "Invalid or missing claim." });
+            }
+
+            if (string.IsNullOrWhiteSpace(userEmail))
+            {
+                return Unauthorized(new { message = "Invalid or missing claim." });
+            }
+
+            try
+            {
+                await _emailService.SendHotelBookingConfirmationAsync(userEmail, request);
+                return Ok(new { message = "Confirmation email sent successfully!" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to send booking confirmation email.", detail = ex.Message });
             }
         }
     }

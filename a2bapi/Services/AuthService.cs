@@ -10,6 +10,7 @@ namespace a2bapi.Services
     {
         Task<AuthResponse> SignupAsync(SignupRequest request);
         Task<AuthResponse> LoginAsync(LoginRequest request);
+        Task<int> DeleteAccountAsync(int userId);
     }
 
     public class AuthService : IAuthService
@@ -61,6 +62,22 @@ namespace a2bapi.Services
             }
 
             return new AuthResponse { Token = _jwt.CreateToken(user.Email, user.Id) };
+        }
+
+        public async Task<int> DeleteAccountAsync(int userId)
+        {
+
+            var user = await _db.Users.SingleOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("Could not find user!");
+            }
+
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
+
+            return user.Id;
         }
     }
 }

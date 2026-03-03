@@ -68,7 +68,7 @@ const SavedFlightsTable = ({ flights, setFlights }) => {
 
     const bookingDetails = {
       FlightName: flight.flightName,
-      FlightDate: new Date(flight.flightDate).toLocaleDateString(),
+      FlightDate: flight.flightDate,
       DepartureIata: flight.departureIata,
       ArrivalIata: flight.arrivalIata,
       DepartureTime: flight.departureTime,
@@ -80,7 +80,7 @@ const SavedFlightsTable = ({ flights, setFlights }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/book-flight`, {
+      const response = await fetch(`http://localhost:5030/api/flights/book`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +163,7 @@ const SavedFlightsTable = ({ flights, setFlights }) => {
                 {flight.flightName}
               </td>
               <td>
-                {new Date(flight.flightDate).toLocaleDateString()}
+                {flight.flightDate}
               </td>
               <td>
                 ${flight.price}

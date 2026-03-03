@@ -48,8 +48,7 @@ namespace a2bapi.Services
                 f.HotelDistance == request.HotelDistance &&
                 f.HotelIataCode == request.HotelIataCode &&
                 f.HotelCountryCode == request.HotelCountryCode &&
-                f.HotelRating == request.HotelRating &&
-                f.Price == request.Price
+                f.HotelRating == request.HotelRating
             );
 
             if (exists)
